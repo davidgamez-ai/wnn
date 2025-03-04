@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weightless Neuron Simulator</title>
+
+    <!-- Application CSS -->
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- jsPanel css -->
+    <link rel="stylesheet" href="third-party/jspanel/jspanel.min.css">
+</head>
+<body>
+    <div>
+        <button id="StartButton">Network Configuration</button>
+        Data Source: <select id="DataSourceSelect"></select>
+        Training: <input type="checkbox" id="TrainingCheckbox">
+        <button id="NextButton">Next >></button>
+    </div>
+
+    <!-- The Modal -->
+    <div id="NetworkSpecificationModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span id="NetworkSpecificationModalClose" class="close">&times;</span>
+            <h2>Network Configuration</h2>
+            <p>Input width: <input type="number" min="0" id="InputWidthInput" value="3"></p>
+            <p>Input height: <input type="number" min="0" id="InputHeightInput" value="3"></p>
+            <p>Layers: <select id="LayersSelect"></select></p>
+            <div class="layers">
+                <h1>Layer</h1>
+                <p>Name: <input type="text" id="LayerNameInput" value="Unnamed"></p>
+                <p>Width: <input type="number" min="0" id="LayerWidthInput" value="3"></p>
+                <p>Height: <input type="number" min="0" id="LayerHeightInput" value="1"></p>
+                <p>Connections per neuron: <input type="number" min="0" id="ConnectionsPerNeuronInput" value="4"></p>
+                <p>Neuron Type: 
+                    <select id="NeuronTypeInput">
+                        <option value="1">GRAM</option>
+                    </select>
+                </p>
+                <p>Connection Pattern:                  
+                    <select id="ConnectionPatternInput">
+                        <option value="1">Random</option>
+                    </select>
+                </p>
+                <button id="AddLayerButton">Add</button>
+            </div>
+            <p><button id="BuildButton">Build</button></p>
+            <p id="ModalError"></p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { Main } from './js/Main.js';
+
+        window.onload = ()=>{
+            new Main();
+        }
+
+    </script>
+</body>
+</html>

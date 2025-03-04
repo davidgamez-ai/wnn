@@ -1,0 +1,7 @@
+export const DEBUG:boolean = false;
+
+export const DEBUG_NETWORK:boolean = false;
+
+export const DEBUG_NEURON:boolean = false;
+
+export const DEBUG_TRAINING:boolean = false;

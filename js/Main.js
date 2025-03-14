@@ -8,9 +8,16 @@ import { Neuron } from './Neuron.js';
 // declare let jsPanel:any; //Possible fix to import issue in TypeScript.
 import { jsPanel } from '../third-party/jspanel/jspanel.js';
 export class Main {
+    //Network that is being controlled
+    network;
+    //Manages the data sources for the network
+    dataManager;
+    //Canvases in panels display the neuron activity.
+    //There is a one-to-one mapping between canvases and grids.
+    canvasArray;
+    //Display size of neurons
+    neuronDisplaySize = 10;
     constructor() {
-        //Display size of neurons
-        this.neuronDisplaySize = 10;
         this.buildNetworkSpecificationModal();
     }
     addEventListeners() {

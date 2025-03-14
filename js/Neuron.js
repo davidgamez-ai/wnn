@@ -1,8 +1,14 @@
 import { DEBUG_NEURON } from './Debug.js';
 export class Neuron {
+    //Indexes of the nodes in the grid that neuron has connections to
+    inputNodes;
+    //Node where output of neuron is passed to.
+    outputNode;
+    //Table storing states
+    table = {};
+    //Training on
+    static training;
     constructor(inputNodes, outputNode) {
-        //Table storing states
-        this.table = {};
         //Run some checks on input and output nodes.
         if (!inputNodes)
             throw "Input nodes must be defined for neuron";

@@ -1,9 +1,9 @@
 import { Data } from "./Data.js";
 import { Neuron } from "./Neuron.js";
 export class RandomData extends Data {
+    percent = 0.25;
     constructor(input, output) {
         super(input, output);
-        this.percent = 0.25;
         this.name = "Random Data";
     }
     /** Random data is compatible with all inputs and outputs. */

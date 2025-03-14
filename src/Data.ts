@@ -15,7 +15,7 @@ export abstract class Data {
     input:Grid;
 
     //The output that is being modified by the data (for training)
-    output:Grid;
+    output:Grid; 
 
     constructor(input:Grid, output:Grid){
         this.input = input;

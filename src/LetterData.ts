@@ -51,7 +51,7 @@ export class LetterData extends Data {
         this.name = "Letter Data";
     }
 
-    /** Random data is compatible with all inputs and outputs. */
+    /** Check that the grid matches the letters */
     test():boolean {
         if(this.input.width !== this.inputWidth)
             return false;

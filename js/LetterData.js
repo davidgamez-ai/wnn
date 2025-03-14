@@ -1,41 +1,41 @@
 import { Data } from "./Data.js";
 import { Neuron } from "./Neuron.js";
 export class LetterData extends Data {
+    letters = [
+        {
+            "i": [
+                [1, 1, 1],
+                [0, 1, 0],
+                [0, 1, 0]
+            ],
+            "o": [
+                [1, 0, 0]
+            ]
+        },
+        {
+            "i": [
+                [1, 0, 1],
+                [1, 0, 1],
+                [1, 1, 1]
+            ],
+            "o": [
+                [0, 1, 0]
+            ]
+        },
+        {
+            "i": [
+                [1, 0, 1],
+                [1, 1, 1],
+                [1, 0, 1]
+            ],
+            "o": [
+                [0, 0, 1]
+            ]
+        }
+    ];
+    letterIndex = 0;
     constructor(input, output) {
         super(input, output);
-        this.letters = [
-            {
-                "i": [
-                    [1, 1, 1],
-                    [0, 1, 0],
-                    [0, 1, 0]
-                ],
-                "o": [
-                    [1, 0, 0]
-                ]
-            },
-            {
-                "i": [
-                    [1, 0, 1],
-                    [1, 0, 1],
-                    [1, 1, 1]
-                ],
-                "o": [
-                    [0, 1, 0]
-                ]
-            },
-            {
-                "i": [
-                    [1, 0, 1],
-                    [1, 1, 1],
-                    [1, 0, 1]
-                ],
-                "o": [
-                    [0, 0, 1]
-                ]
-            }
-        ];
-        this.letterIndex = 0;
         // 3x3 letters as input
         this.inputWidth = 3;
         this.inputHeight = 3;
@@ -44,7 +44,7 @@ export class LetterData extends Data {
         this.outputHeight = 1;
         this.name = "Letter Data";
     }
-    /** Random data is compatible with all inputs and outputs. */
+    /** Check that the grid matches the letters */
     test() {
         if (this.input.width !== this.inputWidth)
             return false;

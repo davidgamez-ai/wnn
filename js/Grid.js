@@ -1,5 +1,15 @@
 import { Node } from './Node.js';
 export class Grid {
+    //Data structure held by grid
+    nodes;
+    //Width of grid
+    width;
+    //Height of grid
+    height;
+    //Size of grid
+    size;
+    //Name of grid
+    name;
     constructor(width, height, name) {
         this.name = name;
         this.width = width;

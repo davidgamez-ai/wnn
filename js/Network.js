@@ -3,6 +3,18 @@ import { Neuron } from "./Neuron.js";
 import { Util } from "./Util.js";
 import { RANDOM_CONNECTIONS } from "./Constants.js";
 export class Network {
+    /* Grids of the network
+        The first layer in the array is the input.
+        The last layer in the array is the output.
+        There can also be grids in the hidden layers.
+        Neurons have grids as inputs and outputs. */
+    grids;
+    /** Neuron layers.
+     *  These are the connections between grids.
+     *  First array is the layer.
+     *  Next two arrays are the two dimensional neurons.
+     */
+    neuronLayers;
     constructor(networkSpecification) {
         this.grids = [];
         this.neuronLayers = [];

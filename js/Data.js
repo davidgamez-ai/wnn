@@ -15,4 +15,17 @@ export class Data {
         this.input = input;
         this.output = output;
     }
+    /** Checks whether the input and output grids are compatible with the data source.
+    */
+    test() {
+        if (this.input.width !== this.inputWidth)
+            return false;
+        if (this.input.height !== this.inputHeight)
+            return false;
+        if (this.output.width !== this.outputWidth)
+            return false;
+        if (this.output.height !== this.outputHeight)
+            return false;
+        return true;
+    }
 }

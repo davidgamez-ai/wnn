@@ -21,25 +21,14 @@ export class MovieLensData extends Data {
         this.inputWidth = 3;
         this.inputHeight = 3;
 
-        // Ratings range from 0-5
-        this.outputWidth = 6;
+        // Ratings range from 0-5 with one decimal place
+        this.outputWidth = 60;
         this.outputHeight = 1;
 
         this.name = "MovieLens";
     }
 
-    /**  */
-    test():boolean {
-        if(this.input.width !== this.inputWidth)
-            return false;
-        if(this.input.height !== this.inputHeight)
-            return false;
-        if(this.output.width !== this.outputWidth)
-            return false;
-        if(this.output.height !== this.outputHeight)
-            return false;
-        return true;
-    }
+
 
     update():void {
         // //Update input

@@ -1,4 +1,4 @@
-export const GRAM_NEURON:number = 1;
+export const HAMMING_NEURON:number = 1;
 
 export const UNRESTRICTED:number = -1;
 

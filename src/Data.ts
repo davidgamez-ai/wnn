@@ -26,9 +26,18 @@ export abstract class Data {
     abstract update():void;
 
     /** Checks whether the input and output grids are compatible with the data source.
-     *  Can also run other tests, for example if connecting to a web service or file.
-     */
-    abstract test():boolean;
+    */ 
+    test():boolean {
+        if(this.input.width !== this.inputWidth)
+            return false;
+        if(this.input.height !== this.inputHeight)
+            return false;
+        if(this.output.width !== this.outputWidth)
+            return false;
+        if(this.output.height !== this.outputHeight)
+            return false;
+        return true;
+    }
 
     /** Returns the parameters for this data type */
     abstract getParameters():DataParameters;

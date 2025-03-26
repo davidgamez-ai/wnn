@@ -1,9 +1,10 @@
 import { Grid } from "./Grid.js";
 import { Neuron } from "./Neuron.js";
+import { HammingNeuron } from "./HammingNeuron.js";
 import { NetworkSpecification } from "./Types.js";
 import { Util } from "./Util.js";
 import { NodeObject } from "./Types.js";
-import { GRAM_NEURON, RANDOM_CONNECTIONS } from "./Constants.js";
+import { HAMMING_NEURON, RANDOM_CONNECTIONS } from "./Constants.js";
 
 export class Network {
     /* Grids of the network
@@ -71,8 +72,14 @@ export class Network {
                             nodes[randomIndex.toString()] = inputGrid.get(tmpX,tmpY);
                         }
 
-                        //Create neuron with the nodes
-                        const neuron = new Neuron(Object.values(nodes), outputGrid.get(x, y));
+                        //Create the specified type of neuron and add to neuron array.
+                        let neuron:Neuron;
+                        switch(layer.neuronType){
+                            case(HAMMING_NEURON): 
+                                neuron = new HammingNeuron(Object.values(nodes), outputGrid.get(x, y));
+                            break;
+                            default: throw "Neuron type not recognized: " + layer.neuronType;
+                        }
                         neuronArray[x].push(neuron);
                     }
                 }

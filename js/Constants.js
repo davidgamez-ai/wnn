@@ -1,4 +1,4 @@
-export const GRAM_NEURON = 1;
+export const HAMMING_NEURON = 1;
 export const UNRESTRICTED = -1;
 export const RANDOM_CONNECTIONS = 1;
 export const START_BUTTON_ID = "StartButton";

@@ -36,4 +36,25 @@ export class RandomData extends Data {
             }
         }
     }
+    /** Amount of randomness can vary between 0 and 100% */
+    getParameters() {
+        return {
+            "Percent": {
+                min: 0,
+                max: 100,
+                value: this.percent
+            }
+        };
+    }
+    /** Updates the percentage of randomness. */
+    setParameters(parameters) {
+        //Run some checks
+        if (!parameters["Percent"])
+            throw "RandomData: Percent parameter not found";
+        const newPercent = parameters["Percent"].value;
+        if (newPercent < 0 || newPercent > 100)
+            throw "RandomData: New percent out of range: " + newPercent;
+        //Store new percent
+        this.percent = newPercent;
+    }
 }

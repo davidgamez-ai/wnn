@@ -19,6 +19,7 @@ export class Main {
     neuronDisplaySize = 10;
     constructor() {
         this.buildNetworkSpecificationModal();
+        this.buildDataParametersModal();
     }
     addEventListeners() {
         //Next button for simulation
@@ -27,8 +28,12 @@ export class Main {
         };
         //Selection of data source
         DOMUtil.getSelect(Const.DATA_SOURCE_SELECT).onchange = (event) => {
-            if (event && event.target)
+            if (event && event.target) {
+                //Update the data manager to use the selected data source
                 this.dataManager.setDataIndex(event.target.value);
+                //Build an appropriate modal to show parameters for this data source
+                this.buildDataParametersModal();
+            }
         };
         //Training on/off
         DOMUtil.getInput(Const.TRAINING_CHECKBOX).onclick = (event) => {
@@ -91,6 +96,36 @@ export class Main {
             newOption.text = this.dataManager.data[i].name;
             dataSourceSelect.add(newOption);
         }
+    }
+    buildDataParametersModal() {
+        // Get the modal
+        const dataParametersModal = DOMUtil.getDiv(Const.DATA_PARAMETERS_MODAL);
+        // Get the button that opens the modal
+        DOMUtil.getButton(Const.DATA_PARAMETERS_BUTTON).onclick = () => {
+            //Get contents div
+            const contentsDiv = DOMUtil.getDiv(Const.DATA_PARAMETERS_MODAL_CONTENTS);
+            //Get current data manager
+            const data = this.dataManager.getData();
+            //Add contents
+            let contentsStr = `<h2>${data.name} Parameters`;
+            const params = data.getParameters();
+            for (let param in params) {
+                contentsStr += `<p>${param} <input `;
+            }
+            contentsDiv.innerHTML = contentsStr;
+            //Show modal
+            dataParametersModal.style.display = "block";
+        };
+        // Get the <span> element that closes the modal
+        DOMUtil.getSpan(Const.DATA_PARAMETERS_MODAL_CLOSE).onclick = () => {
+            dataParametersModal.style.display = "none";
+        };
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = (event) => {
+            if (event.target == dataParametersModal) {
+                dataParametersModal.style.display = "none";
+            }
+        };
     }
     buildNetworkSpecificationModal() {
         // Get the modal

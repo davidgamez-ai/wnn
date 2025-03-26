@@ -1,5 +1,4 @@
 import { Data } from "./Data.js";
-import { Neuron } from "./Neuron.js";
 import { movieLens } from "./data/MovieLens.js";
 export class MovieLensData extends Data {
     movieLensRatings;
@@ -31,25 +30,30 @@ export class MovieLensData extends Data {
         return true;
     }
     update() {
-        //Update input
-        const inputPattern = this.letters[this.letterIndex].i;
-        for (let x = 0; x < this.inputWidth; ++x) {
-            for (let y = 0; y < this.inputHeight; ++y) {
-                this.input.nodes[x][y].value = inputPattern[y][x];
-            }
-        }
-        //Update output
-        if (Neuron.training) {
-            const outputPattern = this.letters[this.letterIndex].o;
-            for (let x = 0; x < this.outputWidth; ++x) {
-                for (let y = 0; y < this.outputHeight; ++y) {
-                    //Need to switch x and y around on output pattern to make it work
-                    this.output.nodes[x][y].value = outputPattern[y][x];
-                }
-            }
-        }
-        //Increase letter index or loop round to zero
-        this.letterIndex++;
-        this.letterIndex %= this.letters.length;
+        // //Update input
+        // const inputPattern = this.letters[this.letterIndex].i;
+        // for(let x:number=0; x<this.inputWidth; ++x){
+        //     for(let y:number=0; y<this.inputHeight; ++y){
+        //         this.input.nodes[x][y].value = inputPattern[y][x];
+        //     }
+        // }
+        // //Update output
+        // if(Neuron.training){
+        //     const outputPattern = this.letters[this.letterIndex].o;
+        //     for(let x:number=0; x<this.outputWidth; ++x){
+        //         for(let y:number=0; y<this.outputHeight; ++y){
+        //             //Need to switch x and y around on output pattern to make it work
+        //             this.output.nodes[x][y].value = outputPattern[y][x];
+        //         }
+        //     }
+        // }
+        // //Increase letter index or loop round to zero
+        // this.letterIndex++;
+        // this.letterIndex %= this.letters.length;
+    }
+    getParameters() {
+        return {};
+    }
+    setParameters(parameters) {
     }
 }

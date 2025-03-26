@@ -1,6 +1,7 @@
 import { Data } from "./Data.js";
 import { Grid } from "./Grid.js";
 import { Neuron } from "./Neuron.js";
+import { DataParameters } from "./Types.js";
 
 export class RandomData extends Data {
     percent:number = 0.25;
@@ -41,6 +42,30 @@ export class RandomData extends Data {
                 }
             }
         }
+    }
+
+    /** Amount of randomness can vary between 0 and 100% */
+    getParameters(): DataParameters {
+        return {
+            "Percent": {
+                min: 0,
+                max: 100,
+                value: this.percent
+            }
+        }
+    }
+
+    /** Updates the percentage of randomness. */
+    setParameters(parameters: DataParameters): void {
+        //Run some checks
+        if(!parameters["Percent"])
+            throw "RandomData: Percent parameter not found";
+        const newPercent:number = parameters["Percent"].value;
+        if(newPercent < 0 || newPercent > 100)
+            throw "RandomData: New percent out of range: " + newPercent;
+        
+        //Store new percent
+        this.percent = newPercent;
     }
     
 }

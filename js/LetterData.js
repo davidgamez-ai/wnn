@@ -78,4 +78,13 @@ export class LetterData extends Data {
         this.letterIndex++;
         this.letterIndex %= this.letters.length;
     }
+    /** Return Letter Data parameters.
+     *  This data type has no configurable parameters
+     */
+    getParameters() {
+        return {};
+    }
+    /** Updates parameters for this data source */
+    setParameters(parameters) {
+    }
 }

@@ -30,6 +30,19 @@ export class DataManager {
         this.dataIndex = 0;
     }
 
+    /** Returns the current data index */
+    getDataIndex():number{
+        return this.dataIndex;
+    }
+
+    /** Returns the current data */
+    getData():Data{
+        if(this.data[this.dataIndex])
+            throw "Error getting data. Index out of range";
+
+        return this.data[this.dataIndex];
+    }
+
     //Sets the data index to change data source
     setDataIndex(newIndex:number){
         this.dataIndex = newIndex;

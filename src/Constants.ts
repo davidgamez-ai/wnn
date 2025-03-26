@@ -18,6 +18,7 @@ export const TRAINING_CHECKBOX:string = "TrainingCheckbox";
 //Modal buttons
 export const BUILD_BUTTON_ID:string = "BuildButton";
 export const ADD_LAYER_BUTTON:string = "AddLayerButton";
+export const DATA_PARAMETERS_BUTTON:string = "DataParametersButton";
 
 //Display of modal errors
 export const MODAL_ERROR:string = "ModalError";
@@ -26,7 +27,12 @@ export const MODAL_ERROR:string = "ModalError";
 export const NETWORK_SPECIFICATION_MODAL:string = "NetworkSpecificationModal";
 export const NETWORK_SPECIFICATION_MODAL_CLOSE:string = "NetworkSpecificationModalClose";
 
-//Modal inputs
+//Data Parameters Modal
+export const DATA_PARAMETERS_MODAL:string = "DataParametersModal";
+export const DATA_PARAMETERS_MODAL_CLOSE:string = "DataParametersModalClose";
+export const DATA_PARAMETERS_MODAL_CONTENTS:string = "DataParametersModalContents";
+
+//Network Specification Modal inputs
 export const INPUT_WIDTH_INPUT:string = "InputWidthInput";
 export const INPUT_HEIGHT_INPUT:string = "InputHeightInput";
 export const LAYERS_SELECT:string = "LayersSelect";

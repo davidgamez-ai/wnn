@@ -1,6 +1,7 @@
 import { Data } from "./Data.js";
 import { Grid } from "./Grid.js";
 import { Neuron } from "./Neuron.js";
+import { DataParameters } from "./Types.js";
 
 export class LetterData extends Data {
     letters =  [ 
@@ -87,6 +88,17 @@ export class LetterData extends Data {
         //Increase letter index or loop round to zero
         this.letterIndex++;
         this.letterIndex %= this.letters.length;
+    }
+
+    /** Return Letter Data parameters.
+     *  This data type has no configurable parameters
+     */
+    getParameters(): DataParameters {
+        return {};
+    }
+
+    /** Updates parameters for this data source */
+    setParameters(parameters: DataParameters): void {
     }
 
 }

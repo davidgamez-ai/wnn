@@ -11,12 +11,17 @@ export const TRAINING_CHECKBOX = "TrainingCheckbox";
 //Modal buttons
 export const BUILD_BUTTON_ID = "BuildButton";
 export const ADD_LAYER_BUTTON = "AddLayerButton";
+export const DATA_PARAMETERS_BUTTON = "DataParametersButton";
 //Display of modal errors
 export const MODAL_ERROR = "ModalError";
 //Network Specification Modal
 export const NETWORK_SPECIFICATION_MODAL = "NetworkSpecificationModal";
 export const NETWORK_SPECIFICATION_MODAL_CLOSE = "NetworkSpecificationModalClose";
-//Modal inputs
+//Data Parameters Modal
+export const DATA_PARAMETERS_MODAL = "DataParametersModal";
+export const DATA_PARAMETERS_MODAL_CLOSE = "DataParametersModalClose";
+export const DATA_PARAMETERS_MODAL_CONTENTS = "DataParametersModalContents";
+//Network Specification Modal inputs
 export const INPUT_WIDTH_INPUT = "InputWidthInput";
 export const INPUT_HEIGHT_INPUT = "InputHeightInput";
 export const LAYERS_SELECT = "LayersSelect";

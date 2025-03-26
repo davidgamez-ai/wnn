@@ -71,7 +71,7 @@ export class Neuron {
     }
     
 
-    /** Returns Hamming distance normalized to between 0 and 1 */
+    /** Returns Hamming distance normalized to between 0 (exact match) and 1 (maximum possible distance) */
     hammingDistance(str1: string, str2: string): number {
         if (str1.length !== str2.length) {
             throw new Error('Strings must be of the same length');

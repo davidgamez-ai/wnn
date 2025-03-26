@@ -23,3 +23,13 @@ export interface NodeObject {
 export interface LookupTable {
     [key: string]: number
 }
+
+/** Parameters for a data source */
+export interface DataParameters {
+    [key:string]: {
+        value:number,
+        min:number,
+        max:number
+    }
+}
+

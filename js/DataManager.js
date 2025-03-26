@@ -19,6 +19,16 @@ export class DataManager {
         //Default 
         this.dataIndex = 0;
     }
+    /** Returns the current data index */
+    getDataIndex() {
+        return this.dataIndex;
+    }
+    /** Returns the current data */
+    getData() {
+        if (this.data[this.dataIndex])
+            throw "Error getting data. Index out of range";
+        return this.data[this.dataIndex];
+    }
     //Sets the data index to change data source
     setDataIndex(newIndex) {
         this.dataIndex = newIndex;

@@ -1,5 +1,6 @@
 import { Grid } from './Grid.js';
 import { UNRESTRICTED } from './Constants.js';
+import { DataParameters } from './Types.js';
 
 export abstract class Data {
     //Input and output dimensions of the data
@@ -28,5 +29,11 @@ export abstract class Data {
      *  Can also run other tests, for example if connecting to a web service or file.
      */
     abstract test():boolean;
+
+    /** Returns the parameters for this data type */
+    abstract getParameters():DataParameters;
+
+    /** Sets the parameteters for this data type */
+    abstract setParameters(parameters:DataParameters):void;
 
 }

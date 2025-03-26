@@ -1,6 +1,6 @@
 import { Grid } from "./Grid.js";
 import { HammingNeuron } from "./HammingNeuron.js";
-import { Util } from "./Util.js";
+import * as Util from "./Util.js";
 import { HAMMING_NEURON, RANDOM_CONNECTIONS } from "./Constants.js";
 export class Network {
     /* Grids of the network

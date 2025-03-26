@@ -26,15 +26,21 @@ export class HammingNeuron extends Neuron {
             this.table[activationPattern] = this.outputNode.value;
             return;
         }
+        
+        //Not training mode. Table is empty, output is zero
+        if(Object.keys(this.table).length === 0){
+            this.outputNode.value = 0;
+            return;
+        }
 
-        //Not training mode. Look for string in table
+        //Not training mode. Look for exact match for pattern in table
         if(this.table[activationPattern] !== undefined){
             //Found string, output should be true
             this.outputNode.value = this.table[activationPattern];
             return;
         }
 
-        //Input pattern not found. Calculate minimum Hamming distance
+        //Input pattern not an exact match. Calculate minimum Hamming distance
         let minHD:number = 1;//Set to maximum possible distance initially
         const minHDOutputs:number[] = [];//Stores the outputs at the minimum Hamming distance
         for(let storedPattern in this.table){

@@ -8,7 +8,7 @@ export class MovieLensData extends Data {
         this.movieLensRatings = JSON.parse(movieLens);
         //Work out the maximum size of input to accommodate all user ratings.
         for (let user in this.movieLensRatings) {
-            console.log(this.movieLensRatings[user].completeTags.length);
+            //console.log(this.movieLensRatings[user].completeTags.length);
         }
         this.inputWidth = 3;
         this.inputHeight = 3;

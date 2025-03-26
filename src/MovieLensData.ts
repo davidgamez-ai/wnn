@@ -15,7 +15,7 @@ export class MovieLensData extends Data {
 
         //Work out the maximum size of input to accommodate all user ratings.
         for(let user in this.movieLensRatings){
-            console.log(this.movieLensRatings[user].completeTags.length);
+            //console.log(this.movieLensRatings[user].completeTags.length);
         }
 
         this.inputWidth = 3;

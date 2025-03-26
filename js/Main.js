@@ -4,6 +4,7 @@ import { Network } from './Network.js';
 import { DEBUG_NETWORK, DEBUG_TRAINING } from './Debug.js';
 import { DataManager } from './DataManager.js';
 import { Neuron } from './Neuron.js';
+import * as Util from './Util.js';
 // JS Panel import (See: https://jspanel.de/)
 // declare let jsPanel:any; //Possible fix to import issue in TypeScript.
 import { jsPanel } from '../third-party/jspanel/jspanel.js';
@@ -70,13 +71,13 @@ export class Main {
             context.fillStyle = "white";
             context.fillRect(0, 0, canvas.width, canvas.height);
             //Draw neuron activity
-            context.fillStyle = "black";
             const grid = this.network.grids[g];
             for (let x = 0; x < grid.width; ++x) {
                 for (let y = 0; y < grid.height; ++y) {
-                    if (grid.nodes[x][y].value === 1) {
-                        context.fillRect(x * this.neuronDisplaySize, y * this.neuronDisplaySize, this.neuronDisplaySize, this.neuronDisplaySize);
-                    }
+                    //Convert value to heat map color
+                    context.fillStyle = Util.hslHeatMapColor(grid.nodes[x][y].value);
+                    //Draw activity of the neuron
+                    context.fillRect(x * this.neuronDisplaySize, y * this.neuronDisplaySize, this.neuronDisplaySize, this.neuronDisplaySize);
                 }
             }
         }

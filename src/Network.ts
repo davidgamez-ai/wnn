@@ -2,7 +2,7 @@ import { Grid } from "./Grid.js";
 import { Neuron } from "./Neuron.js";
 import { HammingNeuron } from "./HammingNeuron.js";
 import { NetworkSpecification } from "./Types.js";
-import { Util } from "./Util.js";
+import * as Util from "./Util.js";
 import { NodeObject } from "./Types.js";
 import { HAMMING_NEURON, RANDOM_CONNECTIONS } from "./Constants.js";
 

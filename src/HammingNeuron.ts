@@ -72,8 +72,13 @@ export class HammingNeuron extends Neuron {
         if( averageOutput < 0 || averageOutput > 1 )
             throw "Averaged output out of range!";
 
+        /*Weight average output by Hamming distance
+            If there is a large distance, the final output will be low.
+            If there is a small distance, the final output will be close to the average output */
+        const finalOutput:number = (1-minHD) * averageOutput;
+
         //Set average output as output state
-        this.outputNode.value = averageOutput;
+        this.outputNode.value = finalOutput;
     }
     
 

@@ -2,20 +2,18 @@ import { RandomData } from './RandomData.js';
 import { LetterData } from './LetterData.js';
 import { MovieLensData } from './MovieLensData.js';
 export class DataManager {
-    //Array of compatible data sources
+    //Array of data sources
     data = [];
     //Index of the current data source
     dataIndex;
-    constructor(input, output) {
+    constructor() {
         //Populate the data array with all available data sources
+        //Random data
+        this.data.push(new RandomData());
         //MovieLens data
-        const movieLensData = new MovieLensData(input, output);
+        this.data.push(new MovieLensData());
         //Letter data
-        const letterData = new LetterData(input, output);
-        if (letterData.test())
-            this.data.push(letterData);
-        //Random data - no need to test this
-        this.data.push(new RandomData(input, output));
+        this.data.push(new LetterData());
         //Default 
         this.dataIndex = 0;
     }
@@ -24,10 +22,16 @@ export class DataManager {
         return this.dataIndex;
     }
     /** Returns the current data */
-    getData() {
-        if (this.data[this.dataIndex])
+    getCurrentData() {
+        if (!this.data[this.dataIndex])
             throw "Error getting data. Index out of range";
         return this.data[this.dataIndex];
+    }
+    /** Returns the current data */
+    getData(index) {
+        if (!this.data[index])
+            throw "Error getting data. Index out of range: " + index;
+        return this.data[index];
     }
     //Sets the data index to change data source
     setDataIndex(newIndex) {

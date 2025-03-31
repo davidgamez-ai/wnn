@@ -34,27 +34,14 @@ export class LetterData extends Data {
         }
     ];
     letterIndex = 0;
-    constructor(input, output) {
-        super(input, output);
+    constructor() {
+        super("Letter Data");
         // 3x3 letters as input
         this.inputWidth = 3;
         this.inputHeight = 3;
         // Training to recognize three letters
         this.outputWidth = 3;
         this.outputHeight = 1;
-        this.name = "Letter Data";
-    }
-    /** Check that the grid matches the letters */
-    test() {
-        if (this.input.width !== this.inputWidth)
-            return false;
-        if (this.input.height !== this.inputHeight)
-            return false;
-        if (this.output.width !== this.outputWidth)
-            return false;
-        if (this.output.height !== this.outputHeight)
-            return false;
-        return true;
     }
     update() {
         //Update input

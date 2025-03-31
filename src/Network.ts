@@ -106,4 +106,20 @@ export class Network {
         }
     }
 
+    /** Returns grid that is the input to the network */
+    getInputGrid():Grid {
+        if(this.grids.length < 2)
+            throw "Network not properly built. Should have at least one input grid and one output grid.";
+        
+        return this.grids[0];
+    }
+    
+    /** Returns grid that is the input to the network */
+    getOutputGrid():Grid {
+        if(this.grids.length < 2)
+            throw "Network not properly built. Should have at least one input grid and one output grid.";
+        
+        return this.grids[this.grids.length-1];
+    }
+
 }

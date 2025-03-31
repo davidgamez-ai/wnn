@@ -14,18 +14,27 @@
 </head>
 <body>
     <div>
-        <button id="StartButton">Network Configuration</button>
-        Data Source: <select id="DataSourceSelect"></select>
-        <button id="DataParametersButton">Parameters</button>
+        <button id="DataButton">Data</button>
+        <button id="NetworkButton">Network</button>
         Training: <input type="checkbox" id="TrainingCheckbox">
         <button id="NextButton">Next >></button>
     </div>
-
-    <!-- Network Configuration Modal -->
-    <div id="NetworkSpecificationModal" class="modal">
+    
+    <!-- Data Configuration Modal -->
+    <div id="DataModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
-            <span id="NetworkSpecificationModalClose" class="close">&times;</span>
+            <span id="DataModalClose" class="close">&times;</span>
+            Data Source: <select id="DataSourceSelect"></select>
+            <div id="DataModalContents"></div>
+        </div>
+    </div>
+
+    <!-- Network Configuration Modal -->
+    <div id="NetworkModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span id="NetworkModalClose" class="close">&times;</span>
             <h2>Network Configuration</h2>
             <p>Input width: <input type="number" min="0" id="InputWidthInput" value="3"></p>
             <p>Input height: <input type="number" min="0" id="InputHeightInput" value="3"></p>
@@ -50,15 +59,6 @@
             </div>
             <p><button id="BuildButton">Build</button></p>
             <p id="ModalError"></p>
-        </div>
-    </div>
-
-    <!-- Data Parameters Modal -->
-    <div id="DataParametersModal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <span id="DataParametersModalClose" class="close">&times;</span>
-            <div id="DataParametersModalContents"></div>
         </div>
     </div>
 

@@ -31,7 +31,6 @@ export class Grid {
                 this.nodes[w][h] = new Node(0);//Add a node at each point in the grid
             }
         } 
-        
     }
 
     /** Returns node at this point in grid */

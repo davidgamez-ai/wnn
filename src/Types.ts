@@ -28,8 +28,9 @@ export interface LookupTable {
 export interface DataParameters {
     [key:string]: {
         value:number,
-        min:number,
-        max:number
+        min?:number,
+        max?:number,
+        options?:number[]
     }
 }
 

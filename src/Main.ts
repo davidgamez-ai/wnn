@@ -28,8 +28,12 @@ export class Main {
     neuronDisplaySize:number = 10;
 
     constructor(){
-        this.buildNetworkSpecificationModal();
-        this.buildDataParametersModal();
+        //Create a data manager
+        this.dataManager = new DataManager();
+
+        //Build the modals
+        this.buildDataModal();
+        this.buildNetworkModal();
     }
 
 
@@ -37,17 +41,6 @@ export class Main {
         //Next button for simulation
         DOMUtil.getButton(Const.NEXT_BUTTON).onclick = ()=>{
             this.update();
-        }
-
-        //Selection of data source
-        DOMUtil.getSelect(Const.DATA_SOURCE_SELECT).onchange = (event:any)=> {
-            if(event && event.target){
-                //Update the data manager to use the selected data source
-                this.dataManager.setDataIndex(event.target.value);
-
-                //Build an appropriate modal to show parameters for this data source
-                this.buildDataParametersModal();
-            }
         }
 
         //Training on/off
@@ -105,54 +98,96 @@ export class Main {
         }
     }
 
-    /** Adds data sources */
-    loadDataSources(){
-        if(!this.network)
-            throw "Network should have been created prior to loading data sources.";
-        if(!this.dataManager)
-            throw "Data Manager should have been created prior to loading data sources.";
-
-        const dataSourceSelect:HTMLSelectElement = DOMUtil.getSelect(Const.DATA_SOURCE_SELECT);
-
-        //Remove any previous data sources.
-        dataSourceSelect.length = 0;
-
-        for(let i:number=0; i<this.dataManager.data.length; ++i){
-            const newOption = document.createElement("option");
-            newOption.value = i.toString();
-            newOption.text = this.dataManager.data[i].name;
-            dataSourceSelect.add(newOption);
-        }
-    }
-
-    buildDataParametersModal(){
+    /** Builds the modal that enables the user to select a data source and configure its parameters. */
+    buildDataModal(){
        // Get the modal
-       const dataParametersModal:HTMLDivElement = DOMUtil.getDiv(Const.DATA_PARAMETERS_MODAL);
+       const dataParametersModal:HTMLDivElement = DOMUtil.getDiv(Const.DATA_MODAL);
 
        // Get the button that opens the modal
-       DOMUtil.getButton(Const.DATA_PARAMETERS_BUTTON).onclick = ()=> {
+       DOMUtil.getButton(Const.DATA_BUTTON).onclick = ()=> {
             //Get contents div
-            const contentsDiv:HTMLDivElement = DOMUtil.getDiv(Const.DATA_PARAMETERS_MODAL_CONTENTS);
+            const contentsDiv:HTMLDivElement = DOMUtil.getDiv(Const.DATA_MODAL_CONTENTS);
 
-            //Get current data manager
-            const data:Data = this.dataManager.getData();
+            //Load up data sources
+            const dataSourceSelect:HTMLSelectElement = DOMUtil.getSelect(Const.DATA_SOURCE_SELECT);
 
-            //Add contents
-            let contentsStr = `<h2>${data.name} Parameters`;
-            const params:DataParameters = data.getParameters(); 
-            for(let param in params){
-                contentsStr += `<p>${param} <input `
+            //Remove any previous data sources.
+            dataSourceSelect.length = 0;
+
+            //Add a list of possible data sources
+            for(let i:number=0; i<this.dataManager.data.length; ++i){
+                const newOption = document.createElement("option");
+                newOption.value = i.toString();
+                newOption.text = this.dataManager.data[i].name;
+                dataSourceSelect.add(newOption);
             }
-            
 
-            contentsDiv.innerHTML = contentsStr;
+            //Listen for changes in the selected data source
+            DOMUtil.getSelect(Const.DATA_SOURCE_SELECT).onchange = (event:any)=> {
+                if(event && event.target){
+                    //Selected index
+                    const dataIndex:number = event.target.value;
+
+                    //Tell data manager to use this data source
+                    this.dataManager.setDataIndex(dataIndex);
+
+                    //Get selected data source
+                    const data:Data = this.dataManager.getCurrentData();
+
+                    //Display parameters for this data source
+                    let contentsStr = `<h2>${data.name} Parameters</h2>`;
+                    const params:DataParameters = data.getParameters(); 
+                    for(let param in params){
+                        if(params[param].options){//Drop down list of options
+                            contentsStr += `<p><select id="DataParameter_${param}">`;
+                            for(let option of params[param].options){
+                                if(option === params[param].value)//Selected user
+                                    contentsStr += `<option selected value="${option}">${option}</option>`;
+                                else
+                                    contentsStr += `<option value="${option}">${option}</option>`;
+                            }
+                            contentsStr += "</select></p>";
+                        }
+                        else if (params[param].min !== undefined && params[param].max !== undefined){//Single value with min and max
+                            contentsStr += `<p>${param} <input id="DataParameter_${param}" type="number" min="${params[param].min}" max="${params[param].max}" value="${params[param].value}"></p>`
+                        }
+                        else{
+                            console.log(params[param]);
+                            throw "Parameter type not recognized";
+                        }
+                    }
+
+                    //Add parameters to page
+                    contentsDiv.innerHTML = contentsStr;
+
+                    //Add button to save parameters
+                    const saveParamButton = document.createElement("button");
+                    saveParamButton.innerHTML = "Save";
+
+                    //Add event handler to button
+                    saveParamButton.onclick = ()=>{
+                        //Extract parameters from input and update them
+                        for(let param in params){
+                            const newValue:number = parseInt(DOMUtil.getInput(`DataParameter_${param}`).value);
+                            //console.log(`${param} new value: ${value}`);
+                            params[param].value = newValue;
+                        }
+
+                        //Save parameters
+                        this.dataManager.getCurrentData().setParameters(params);
+                    }
+
+                    //Add save button to page
+                    contentsDiv.append(saveParamButton);
+                }
+            }
 
             //Show modal
             dataParametersModal.style.display = "block";
        }
 
        // Get the <span> element that closes the modal
-       DOMUtil.getSpan(Const.DATA_PARAMETERS_MODAL_CLOSE).onclick = ()=> {
+       DOMUtil.getSpan(Const.DATA_MODAL_CLOSE).onclick = ()=> {
             dataParametersModal.style.display = "none";
        }
 
@@ -165,26 +200,47 @@ export class Main {
     }
 
  
-    buildNetworkSpecificationModal(){
-       // Get the modal
-       const configureModal:HTMLDivElement = DOMUtil.getDiv(Const.NETWORK_SPECIFICATION_MODAL);
+    /** Builds modal to configure network. */
+    buildNetworkModal(){
+        // Get the modal
+        const configureModal:HTMLDivElement = DOMUtil.getDiv(Const.NETWORK_MODAL);
 
-       // Get the button that opens the modal
-       DOMUtil.getButton(Const.START_BUTTON_ID).onclick = ()=> {
-           configureModal.style.display = "block";
-       }
+        // Get the button that opens the modal
+        DOMUtil.getButton(Const.NETWORK_BUTTON_ID).onclick = ()=> {
+            //Selected data source
+            const data:Data = this.dataManager.getCurrentData();
+            
+            //Fix the input space if appropriate
+            if(data.inputWidth !== Const.UNRESTRICTED){
+                DOMUtil.getInput(Const.INPUT_WIDTH_INPUT).value = data.inputWidth.toString();
+            }
+            if(data.inputHeight !== Const.UNRESTRICTED){
+                DOMUtil.getInput(Const.INPUT_HEIGHT_INPUT).value = data.inputHeight.toString();
+            }
 
-       // Get the <span> element that closes the modal
-       DOMUtil.getSpan(Const.NETWORK_SPECIFICATION_MODAL_CLOSE).onclick = ()=> {
-           configureModal.style.display = "none";
-       }
+            //Set defaults for first layer to save time - these can be changed by user for multi layer architecture
+            if(data.outputWidth !== Const.UNRESTRICTED){
+                DOMUtil.getInput(Const.LAYER_WIDTH_INPUT).value = data.outputWidth.toString();
+            }
+            if(data.outputHeight !== Const.UNRESTRICTED){
+                DOMUtil.getInput(Const.LAYER_HEIGHT_INPUT).value = data.outputHeight.toString();
+            }
 
-       // When the user clicks anywhere outside of the modal, close it
-       window.onclick = (event:any) => {
-           if (event.target == configureModal) {
-               configureModal.style.display = "none";
-           }
-       }
+            //Show modal
+            configureModal.style.display = "block";
+        }
+
+        // Get the <span> element that closes the modal
+        DOMUtil.getSpan(Const.NETWORK_MODAL_CLOSE).onclick = ()=> {
+            configureModal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = (event:any) => {
+            if (event.target == configureModal) {
+                configureModal.style.display = "none";
+            }
+        }
 
         // Get the button that adds a layer
         DOMUtil.getButton(Const.ADD_LAYER_BUTTON).onclick = ()=> {
@@ -208,9 +264,8 @@ export class Main {
 
        //Start build
        DOMUtil.getButton(Const.BUILD_BUTTON_ID).onclick = ()=> {
-            //Reset errors
-            const modalError:HTMLParagraphElement = DOMUtil.getParagraph(Const.MODAL_ERROR);
-            modalError.innerHTML = "";
+            //Errors
+            let errorStr = "";
 
             //Get network configuration
             const inputWidth:number = parseInt(DOMUtil.getInput(Const.INPUT_WIDTH_INPUT).value);
@@ -221,7 +276,7 @@ export class Main {
 
             //Check that there is at least one layer and display error message if not.
             if(layersSelect.length === 0){
-                modalError.innerHTML = "You must add at least one layer";
+                errorStr += "You must add at least one layer\n";
                 return;
             }
 
@@ -233,25 +288,46 @@ export class Main {
             }
 
             //Create network specification
-            const networkSpecification:NetworkSpecification = {
+            const netSpec:NetworkSpecification = {
                 inputWidth: inputWidth,
                 inputHeight:inputHeight,
                 layers: layersArray
             }
-            if(DEBUG_NETWORK) console.log(networkSpecification);
+            if(DEBUG_NETWORK) console.log(netSpec);
 
+            //Check that input dimensions match data source and dimensions of top layer match data source
+            const data:Data = this.dataManager.getCurrentData();//Selected data source
+            if(data.inputWidth !== Const.UNRESTRICTED){
+                //Check input width
+                if(netSpec.inputWidth !== data.inputWidth)
+                    errorStr += `Data input width (${data.inputWidth}) must match network input width (${netSpec.inputWidth}).\n`;
+                if(netSpec.inputHeight !== data.inputHeight)
+                    errorStr += `Data input width (${data.inputHeight}) must match network input width (${netSpec.inputHeight}).\n`;
+
+                //Assume that top layer is training layer 
+                //#FIXME# - ALLOW USER TO SET THIS LATER
+                const topLayer:Layer = netSpec.layers[netSpec.layers.length-1];
+                if(topLayer.width !== data.outputWidth)
+                    errorStr += `Data output width (${data.outputWidth}) must match top layer width (${topLayer.width}).\n`;
+                if(topLayer.height !== data.outputHeight)
+                    errorStr += `Data output height (${data.outputWidth}) must match top layer height (${topLayer.height}).\n`;
+            }
+
+            //Handle errors and quit if necessary
+            DOMUtil.getParagraph(Const.MODAL_ERROR).innerHTML = errorStr;
+            if(errorStr.length > 0){
+                return;
+            }
+     
             //Create network
-            this.network = new Network(networkSpecification);
+            this.network = new Network(netSpec);
+
+            //Link network to data source
+            data.setInput(this.network.getInputGrid());
+            data.setInput(this.network.getOutputGrid());
 
             //Create panels to display neuron activity.
             this.addPanels();
-
-            //Create data manager
-            const grids:Grid[] = this.network.grids;
-            this.dataManager = new DataManager(grids[0], grids[grids.length-1]);
-
-            //Load compatible data sources into the data select
-            this.loadDataSources();
 
             //Add event listeners
             this.addEventListeners();

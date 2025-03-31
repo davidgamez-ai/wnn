@@ -18,25 +18,23 @@ export abstract class Data {
     //The output that is being modified by the data (for training)
     output:Grid; 
 
-    constructor(input:Grid, output:Grid){
-        this.input = input;
-        this.output = output;
+    constructor(name:string){
+        this.name = name;
     }
 
+    /** Updates the inputs and outputs with data */
     abstract update():void;
 
-    /** Checks whether the input and output grids are compatible with the data source.
-    */ 
-    test():boolean {
-        if(this.input.width !== this.inputWidth)
-            return false;
-        if(this.input.height !== this.inputHeight)
-            return false;
-        if(this.output.width !== this.outputWidth)
-            return false;
-        if(this.output.height !== this.outputHeight)
-            return false;
-        return true;
+    setInput(input:Grid){
+        if(input.width !== this.inputWidth || input.height !== this.inputHeight)
+            throw "Input not compatible with this data source."
+        this.input = input;
+    }
+
+    setOutput(output:Grid){
+        if(output.width !== this.outputWidth || output.height !== this.outputHeight)
+            throw "Output not compatible with this data source."
+        this.output = output;
     }
 
     /** Returns the parameters for this data type */

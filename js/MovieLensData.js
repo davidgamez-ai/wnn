@@ -1,21 +1,28 @@
 import { Data } from "./Data.js";
 import { movieLens } from "./data/MovieLens.js";
 export class MovieLensData extends Data {
+    //Object containing MovieLens ratings
     movieLensRatings;
-    constructor(input, output) {
-        super(input, output);
+    //Current user
+    user;
+    //List of user IDs
+    users = [];
+    //Maps between tags and nodes in the input grid
+    tagMap;
+    constructor() {
+        super("MovieLens");
         //Convert movieLensData to object
         this.movieLensRatings = JSON.parse(movieLens);
-        //Work out the maximum size of input to accommodate all user ratings.
+        //Load the user IDs
         for (let user in this.movieLensRatings) {
-            //console.log(this.movieLensRatings[user].completeTags.length);
+            this.users.push(parseInt(user));
         }
-        this.inputWidth = 3;
-        this.inputHeight = 3;
-        // Ratings range from 0-5 with one decimal place
-        this.outputWidth = 60;
+        //Set size of output. Each neuron encodes 0.5 of rating.
+        this.outputWidth = 11; // 0=0, 1=0.5, 2=1 ... 11=5;
         this.outputHeight = 1;
-        this.name = "MovieLens";
+        //Set starting user
+        this.user = 2;
+        this.updateInputSize();
     }
     update() {
         // //Update input
@@ -40,8 +47,40 @@ export class MovieLensData extends Data {
         // this.letterIndex %= this.letters.length;
     }
     getParameters() {
-        return {};
+        return {
+            "User": {
+                options: this.users,
+                value: this.user
+            }
+        };
     }
     setParameters(parameters) {
+        this.user = parameters["User"].value;
+        this.updateInputSize();
+    }
+    /** Set size of input and output space based on selected user */
+    updateInputSize() {
+        this.inputWidth = this.movieLensRatings[this.user].completeTags.length;
+        this.inputHeight = 1;
+        console.log(`MovieLens. User: ${this.user}. Setting parameters. InputWidth: ${this.inputWidth}; InputHeight: ${this.inputHeight}; OutputWidth: ${this.outputWidth}; OutputHeight: ${this.outputHeight}`);
+    }
+    /** Override */
+    setInput(input) {
+        super.setInput(input);
+        //Reset tag map
+        this.tagMap = {};
+        //Generate mapping between tags and nodes in input grid
+        let tagCtr = 0;
+        const completeTags = this.movieLensRatings[this.user].completeTags; //Local reference for convenience
+        for (let row = 0; row < input.width; ++row) {
+            for (let col = 0; col < input.height; ++col) {
+                //Map tag to node
+                this.tagMap[completeTags[tagCtr]] = input.get(row, col);
+                //Set label in node
+                input.get(row, col).label = completeTags[tagCtr];
+                ++tagCtr;
+            }
+        }
+        console.log(this.tagMap);
     }
 }

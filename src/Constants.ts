@@ -4,8 +4,6 @@ export const UNRESTRICTED:number = -1;
 
 export const RANDOM_CONNECTIONS:number = 1;
 
-export const START_BUTTON_ID:string = "StartButton";
-
 //Data source
 export const DATA_SOURCE_SELECT:string = "DataSourceSelect";
 
@@ -18,19 +16,20 @@ export const TRAINING_CHECKBOX:string = "TrainingCheckbox";
 //Modal buttons
 export const BUILD_BUTTON_ID:string = "BuildButton";
 export const ADD_LAYER_BUTTON:string = "AddLayerButton";
-export const DATA_PARAMETERS_BUTTON:string = "DataParametersButton";
+export const DATA_BUTTON:string = "DataButton";
 
 //Display of modal errors
 export const MODAL_ERROR:string = "ModalError";
 
 //Network Specification Modal
-export const NETWORK_SPECIFICATION_MODAL:string = "NetworkSpecificationModal";
-export const NETWORK_SPECIFICATION_MODAL_CLOSE:string = "NetworkSpecificationModalClose";
+export const NETWORK_BUTTON_ID:string = "NetworkButton";
+export const NETWORK_MODAL:string = "NetworkModal";
+export const NETWORK_MODAL_CLOSE:string = "NetworkModalClose";
 
 //Data Parameters Modal
-export const DATA_PARAMETERS_MODAL:string = "DataParametersModal";
-export const DATA_PARAMETERS_MODAL_CLOSE:string = "DataParametersModalClose";
-export const DATA_PARAMETERS_MODAL_CONTENTS:string = "DataParametersModalContents";
+export const DATA_MODAL:string = "DataModal";
+export const DATA_MODAL_CLOSE:string = "DataModalClose";
+export const DATA_MODAL_CONTENTS:string = "DataModalContents";
 
 //Network Specification Modal inputs
 export const INPUT_WIDTH_INPUT:string = "InputWidthInput";

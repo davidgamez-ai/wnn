@@ -1,5 +1,4 @@
 import { Data } from "./Data.js";
-import { Grid } from "./Grid.js";
 import { Neuron } from "./Neuron.js";
 import { DataParameters } from "./Types.js";
 
@@ -39,8 +38,8 @@ export class LetterData extends Data {
 
     letterIndex:number = 0;
 
-    constructor(input:Grid, output:Grid){
-        super(input, output); 
+    constructor(){
+        super("Letter Data"); 
         // 3x3 letters as input
         this.inputWidth = 3;
         this.inputHeight = 3;
@@ -48,21 +47,6 @@ export class LetterData extends Data {
         // Training to recognize three letters
         this.outputWidth = 3;
         this.outputHeight = 1;
-
-        this.name = "Letter Data";
-    }
-
-    /** Check that the grid matches the letters */
-    test():boolean {
-        if(this.input.width !== this.inputWidth)
-            return false;
-        if(this.input.height !== this.inputHeight)
-            return false;
-        if(this.output.width !== this.outputWidth)
-            return false;
-        if(this.output.height !== this.outputHeight)
-            return false;
-        return true;
     }
 
     update():void {

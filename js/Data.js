@@ -11,21 +11,17 @@ export class Data {
     input;
     //The output that is being modified by the data (for training)
     output;
-    constructor(input, output) {
-        this.input = input;
-        this.output = output;
+    constructor(name) {
+        this.name = name;
     }
-    /** Checks whether the input and output grids are compatible with the data source.
-    */
-    test() {
-        if (this.input.width !== this.inputWidth)
-            return false;
-        if (this.input.height !== this.inputHeight)
-            return false;
-        if (this.output.width !== this.outputWidth)
-            return false;
-        if (this.output.height !== this.outputHeight)
-            return false;
-        return true;
+    setInput(input) {
+        if (input.width !== this.inputWidth || input.height !== this.inputHeight)
+            throw "Input not compatible with this data source.";
+        this.input = input;
+    }
+    setOutput(output) {
+        if (output.width !== this.outputWidth || output.height !== this.outputHeight)
+            throw "Output not compatible with this data source.";
+        this.output = output;
     }
 }

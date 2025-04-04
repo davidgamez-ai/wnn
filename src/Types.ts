@@ -34,3 +34,10 @@ export interface DataParameters {
     }
 }
 
+/** MovieLens Rating */
+export interface MovieLensRating {
+    timestamp:number,
+    rating:number,
+    tags:string[]
+}
+

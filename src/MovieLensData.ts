@@ -1,31 +1,35 @@
 import { Data } from "./Data.js";
 import { Grid } from "./Grid.js";
 import { Neuron } from "./Neuron.js";
-import { DataParameters } from "./Types.js";
+import { DataParameters, MovieLensRating } from "./Types.js";
 import { movieLens } from "./data/MovieLens.js";
-import { Node } from './Node.js'
+import { Node } from './Node.js';
+import { DEBUG_DATA } from "./Debug.js";
 
 export class MovieLensData extends Data {
     //Object containing MovieLens ratings
-    movieLensRatings:any;
+    movieLensRatings: any;
 
     //Current user
-    user:number;
+    user: number;
 
     //List of user IDs
-    users:number[] = [];
+    users: number[] = [];
 
     //Maps between tags and nodes in the input grid
-    tagMap:{[key:string]:Node};
+    tagMap: { [key: string]: Node };
 
-    constructor(){
-        super("MovieLens"); 
+    //Keeps track of which rating we are loading
+    ratingCtr: number;
+
+    constructor() {
+        super("MovieLens");
 
         //Convert movieLensData to object
         this.movieLensRatings = JSON.parse(movieLens);
 
         //Load the user IDs
-        for(let user in this.movieLensRatings){
+        for (let user in this.movieLensRatings) {
             this.users.push(parseInt(user));
         }
 
@@ -36,36 +40,56 @@ export class MovieLensData extends Data {
         //Set starting user
         this.user = 2;
         this.updateInputSize();
-
     }
 
-    update():void {
-        // //Update input
-        // const inputPattern = this.letters[this.letterIndex].i;
-        // for(let x:number=0; x<this.inputWidth; ++x){
-        //     for(let y:number=0; y<this.inputHeight; ++y){
-        //         this.input.nodes[x][y].value = inputPattern[y][x];
-        //     }
-        // }
+    /** Updates inputs using tags.
+     *  #FIXME# This would be more efficient if ratings stored tags in an object.
+     */
+    update(): void {
+        //Reset input
+        for(let w:number=0; w<this.input.width; ++w){
+            for(let h:number=0; h<this.input.height; ++h){
+                this.input.nodes[w][h].value = 0;//Reset input
+            }
+        } 
 
-        // //Update output
-        // if(Neuron.training){
-        //     const outputPattern = this.letters[this.letterIndex].o;
-        //     for(let x:number=0; x<this.outputWidth; ++x){
-        //         for(let y:number=0; y<this.outputHeight; ++y){
-        //             //Need to switch x and y around on output pattern to make it work
-        //             this.output.nodes[x][y].value = outputPattern[y][x];
-        //         }
-        //     }
-        // }
+        //Get current rating
+        const ratingData:MovieLensRating = this.movieLensRatings[this.user].rating[this.ratingCtr];
 
-        // //Increase letter index or loop round to zero
-        // this.letterIndex++;
-        // this.letterIndex %= this.letters.length;
+        //Selectively set input nodes to 1 if tags are present.
+        for(let tag of ratingData.tags){
+            //Double check tag is in map
+            if(!this.tagMap[tag])
+                throw "Tag missing from tag map: " + tag;
+
+            this.tagMap[tag].value = 1;
+        }
+
+        //Calculate index of output neuron that should be active
+        if(Neuron.training){
+            //Calculate output index
+            const outputIndex:number = Math.round(2*ratingData.rating) + 1;
+            if(outputIndex < 0 || outputIndex > 11)
+                throw "Output index out of range: " + outputIndex;
+            if(DEBUG_DATA) console.log(`Output index: ${outputIndex}`);
+            for(let w:number=0; w<this.output.width; ++w){
+                if(w === outputIndex)
+                    this.output.get(w, 1).value = 1;
+                else
+                    this.output.get(w, 1).value = 0;
+            }
+        }
+
+        //Increase rating counter and reset if necessary
+        ++this.ratingCtr;
+        if(DEBUG_DATA) console.log(`Rating counter: ${this.ratingCtr}`);
+        if (this.ratingCtr === this.movieLensRatings[this.user].rating.length){
+            this.ratingCtr = 0;
+        }
     }
 
     getParameters(): DataParameters {
-        return {            
+        return {
             "User": {
                 options: this.users,
                 value: this.user
@@ -80,8 +104,8 @@ export class MovieLensData extends Data {
     }
 
     /** Set size of input and output space based on selected user */
-    updateInputSize(){
-        
+    updateInputSize() {
+
         this.inputWidth = this.movieLensRatings[this.user].completeTags.length;
         this.inputHeight = 1;
 
@@ -95,13 +119,16 @@ export class MovieLensData extends Data {
         //Reset tag map
         this.tagMap = {};
 
+        //Reset rating counter
+        this.ratingCtr = 0;
+
         //Generate mapping between tags and nodes in input grid
-        let tagCtr:number = 0;
-        const completeTags:string[] = this.movieLensRatings[this.user].completeTags;//Local reference for convenience
-        for(let row:number=0; row<input.width; ++row){
-            for(let col:number=0;col<input.height; ++col){
+        let tagCtr: number = 0;
+        const completeTags: string[] = this.movieLensRatings[this.user].completeTags;//Local reference for convenience
+        for (let row: number = 0; row < input.width; ++row) {
+            for (let col: number = 0; col < input.height; ++col) {
                 //Map tag to node
-                this.tagMap[ completeTags[tagCtr] ] = input.get(row, col);
+                this.tagMap[completeTags[tagCtr]] = input.get(row, col);
 
                 //Set label in node
                 input.get(row, col).label = completeTags[tagCtr];

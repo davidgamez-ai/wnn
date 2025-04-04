@@ -297,22 +297,25 @@ export class Main {
 
             //Check that input dimensions match data source and dimensions of top layer match data source
             const data:Data = this.dataManager.getCurrentData();//Selected data source
-            if(data.inputWidth !== Const.UNRESTRICTED){
-                //Check input width
+            if(data.inputWidth !== Const.UNRESTRICTED){//Check input width
                 if(netSpec.inputWidth !== data.inputWidth)
                     errorStr += `Data input width (${data.inputWidth}) must match network input width (${netSpec.inputWidth}).\n`;
+            }
+            if(data.inputHeight !== Const.UNRESTRICTED){//Check input height
                 if(netSpec.inputHeight !== data.inputHeight)
                     errorStr += `Data input width (${data.inputHeight}) must match network input width (${netSpec.inputHeight}).\n`;
-
-                //Assume that top layer is training layer 
-                //#FIXME# - ALLOW USER TO SET THIS LATER
-                const topLayer:Layer = netSpec.layers[netSpec.layers.length-1];
-                if(topLayer.width !== data.outputWidth)
-                    errorStr += `Data output width (${data.outputWidth}) must match top layer width (${topLayer.width}).\n`;
-                if(topLayer.height !== data.outputHeight)
-                    errorStr += `Data output height (${data.outputWidth}) must match top layer height (${topLayer.height}).\n`;
             }
 
+            //Assume that top layer is training layer 
+            //#FIXME# - ALLOW USER TO SET THIS LATER
+            const topLayer:Layer = netSpec.layers[netSpec.layers.length-1];
+            if(topLayer.width !== data.outputWidth)
+                errorStr += `Data output width (${data.outputWidth}) must match top layer width (${topLayer.width}).\n`;
+            if(topLayer.height !== data.outputHeight)
+                errorStr += `Data output height (${data.outputWidth}) must match top layer height (${topLayer.height}).\n`;
+            console.log(`Data input width: ${data.inputWidth}; data input height: ${data.inputHeight}; Network input width: ${netSpec.inputWidth}; Network input height: ${netSpec.inputHeight}`);
+            console.log(`Data output width: ${data.outputWidth}; Data output height: ${data.outputHeight}; Network output width: ${topLayer.width}; Network output height: ${topLayer.height}`);
+            
             //Handle errors and quit if necessary
             DOMUtil.getParagraph(Const.MODAL_ERROR).innerHTML = errorStr;
             if(errorStr.length > 0){
@@ -324,7 +327,7 @@ export class Main {
 
             //Link network to data source
             data.setInput(this.network.getInputGrid());
-            data.setInput(this.network.getOutputGrid());
+            data.setOutput(this.network.getOutputGrid());
 
             //Create panels to display neuron activity.
             this.addPanels();
